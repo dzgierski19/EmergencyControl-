@@ -11,25 +11,28 @@ datasource db {
 }
 
 model Worker {
-  id        String    @id @default(uuid())
-  name      String?
-  role      Role
-  events    Event[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  deletedAt DateTime?
+  id           String    @id @default(uuid())
+  name         String
+  role         Role
+  workerLevel  Level
+  currentEvent String?
+  pastEvents   Event[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  deletedAt    DateTime?
 }
 
 model Event {
-  id              String    @id @default(uuid())
-  title           String
-  additional_info String?
-  status          Status    @default(WAITING_FOR_ACTION)
-  worker          Worker    @relation(fields: [authorId], references: [id])
-  authorId        String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime?
-  deletedAt       DateTime?
+  id             String    @id @default(uuid())
+  title          String
+  additionalInfo String?
+  eventLevel     Level
+  status         Status    @default(WAITING_FOR_ACTION)
+  worker         Worker    @relation(fields: [authorId], references: [id])
+  authorId       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime?
+  deletedAt      DateTime?
 }
 
 enum Role {
@@ -43,4 +46,10 @@ enum Status {
   IN_PROGRESS
   CANCELLED
   FINISHED
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
 }
