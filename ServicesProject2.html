@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Tomasz M. Karpinski">
+    <title>Select the service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        label, select, button {
+            display: block;
+            margin: 10px 0;
+        }
+        #ambulance-options {
+            display: none;
+        }
+        .service-option {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .service-option img {
+            width: 150px;
+            height: 80px;
+        }
+        .service-option.selected {
+            border-color: blue;
+        }
+        label {
+        font-size: 1.5em;
+        font-weight: bold;
+        }
+        h1 {
+        font-size: 1.6em;
+        }
+    </style>
+</head>
+<body>
+    <center><h1>Select the appropriate service/s and type of incident</h1>
+
+    <label>1. Select the service:</label>
+    <div id="services-options">
+        <div class="service-option" data-service="police" onclick="selectService('police')">
+            <img src="police.png" alt="Police">
+            <p>Police</p>
+        </div>
+        <div class="service-option" data-service="ambulance" onclick="selectService('ambulance')">
+            <img src="ambulance.png" alt="Ambulance">
+            <p>Ambulance</p>
+        </div>
+        <div class="service-option" data-service="fireBrigade" onclick="selectService('fireBrigade')">
+            <img src="fire.png" alt="Fire Brigade">
+            <p>Fire Brigade</p>
+        </div>
+    </div>
+
+    <label for="incident">2. Select the type of incident:</label>
+    <select id="incident" onchange="toggleAmbulanceOptions()">
+        <option value="">-- Select the type of incident --</option>
+    </select>
+
+    <div id="ambulance-options">
+        <label for="ambulance-accident">Select the additional option:</label>
+        <select id="ambulance-accident">
+            <option value="ambulance_fire">Ambulance and fire brigade needed</option>
+            <option value="ambulance">Ambulance needed</option>
+            <option value="no_ambulance">No ambulance needed</option>
+        </select>
+    </div>
+
+    <button onclick="sendNotification()">Send a notification</button>
+
+    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
+    <script>
+        const servicesOptions = {
+            police: ["Road accident", "Theft", "Assault", "Terrorist attack"],
+            ambulance: ["Unconscious person", "Suspected stroke", "Suspected heart attack", "Sudden illness", "Exacerbation of chronic disease", "Injury or fracture"],
+            fireBrigade: ["Fire", "Road accident", "Chemical leak", "Flooding", "Removal of insect nest"]
+        };
+
+        const notifications = {
+            road_accident: { ambulance_fire: ["Police", "Fire Brigade", "Ambulance"], ambulance: ["Police", "Ambulance"], no_ambulance: ["Police"] },
+            theft: ["Police"],
+            assault: ["Police"],
+            terrorist_attack: ["Police", "Fire Brigade", "Ambulance"],
+            unconscious_person: ["Police", "Ambulance"],
+            suspected_stroke: ["Ambulance"],
+            suspected_heart_attack: ["Ambulance"],
+            sudden_illness: ["Ambulance"],
+            exacerbation_of_chronic_disease: ["Ambulance"],
+            injury_or_fracture: ["Ambulance"],
+            fire: ["Fire Brigade"],
+            flooding: ["Fire Brigade"],
+            chemical_leak: ["Fire Brigade", "Ambulance", "Police"],
+            removal_of_insect_nest: ["Fire Brigade"]
+        };
+
+        let selectedService = "";
+
+        function selectService(service) {
+            selectedService = service;
+            updateOptions();
+            
+            // Clear previous selections and highlight the selected service
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-service="${service}"]`).classList.add('selected');
+        }
+
+        function updateOptions() {
+            const incident = document.getElementById("incident");
+            incident.innerHTML = '<option value="">-- Select the type of incident --</option>';
+
+            if (selectedService && servicesOptions[selectedService]) {
+                servicesOptions[selectedService].forEach(option => {
+                    incident.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
+                });
+            }
+        }
+
+        function toggleAmbulanceOptions() {
+            document.getElementById("ambulance-options").style.display = document.getElementById("incident").value === "road_accident" ? "block" : "none";
+        }
+
+        function sendNotification() {
+            const incident = document.getElementById("incident").value;
+            const ambulanceOption = document.getElementById("ambulance-accident").value;
+            let result = "";
+
+            if (incident === "road_accident") {
+                result = `Application sent to: ${notifications[incident][ambulanceOption].join(", ")}`;
+            } else if (notifications[incident]) {
+                result = `Application sent to: ${notifications[incident].join(", ")}`;
+            } else {
+                result = "The correct incident type was not selected.";
+            }
+
+            document.getElementById("result").innerText = result;
+        }
+    </script></center>
+</body>
+</html>
