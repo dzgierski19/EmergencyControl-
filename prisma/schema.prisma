@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Worker {
+  id        Int       @id @default(autoincrement())
+  name      String?
+  role      Role
+  events    Event[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Event {
+  id              Int       @id @default(autoincrement())
+  title           String
+  additional_info String?
+  status          Status    @default(WAITING_FOR_ACTION)
+  worker          Worker    @relation(fields: [authorId], references: [id])
+  authorId        Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime?
+  deletedAt       DateTime?
+}
+
+enum Role {
+  POLICEMAN
+  FIREFIGHTER
+  PARAMEDIC
+}
+
+enum Status {
+  WAITING_FOR_ACTION
+  IN_PROGRESS
+  CANCELLED
+  FINISHED
+}
