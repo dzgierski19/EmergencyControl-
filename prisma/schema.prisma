@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Worker {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   name      String?
   role      Role
   events    Event[]
@@ -21,12 +21,12 @@ model Worker {
 }
 
 model Event {
-  id              Int       @id @default(autoincrement())
+  id              String    @id @default(uuid())
   title           String
   additional_info String?
   status          Status    @default(WAITING_FOR_ACTION)
   worker          Worker    @relation(fields: [authorId], references: [id])
-  authorId        Int
+  authorId        String
   createdAt       DateTime  @default(now())
   updatedAt       DateTime?
   deletedAt       DateTime?
