@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             padding: 20px;
         }
-        label, select, button {
+        label, select, button, input {
             display: block;
             margin: 10px 0;
         }
@@ -31,118 +31,167 @@
             border-color: blue;
         }
         label {
-        font-size: 1.5em;
-        font-weight: bold;
+            font-size: 1.5em;
+            font-weight: bold;
         }
         h1 {
-        font-size: 1.6em;
+            font-size: 1.6em;
+        }
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <center><h1>Select the appropriate service/s and type of incident</h1>
+    <center>
+        <h1>Select the appropriate service/s and type of incident</h1>
 
-    <label>1. Select the service:</label>
-    <div id="services-options">
-        <div class="service-option" data-service="police" onclick="selectService('police')">
-            <img src="police.png" alt="Police">
-            <p>Police</p>
-        </div>
-        <div class="service-option" data-service="ambulance" onclick="selectService('ambulance')">
-            <img src="ambulance.png" alt="Ambulance">
-            <p>Ambulance</p>
-        </div>
-        <div class="service-option" data-service="fireBrigade" onclick="selectService('fireBrigade')">
-            <img src="fire.png" alt="Fire Brigade">
-            <p>Fire Brigade</p>
-        </div>
-    </div>
+        <label for="first-name">First Name:</label>
+        <input type="text" id="first-name" required placeholder="Enter your first name">
 
-    <label for="incident">2. Select the type of incident:</label>
-    <select id="incident" onchange="toggleAmbulanceOptions()">
-        <option value="">-- Select the type of incident --</option>
-    </select>
+        <label for="last-name">Last Name:</label>
+        <input type="text" id="last-name" required placeholder="Enter your last name">
 
-    <div id="ambulance-options">
-        <label for="ambulance-accident">Select the additional option:</label>
-        <select id="ambulance-accident">
-            <option value="ambulance_fire">Ambulance and fire brigade needed</option>
-            <option value="ambulance">Ambulance needed</option>
-            <option value="no_ambulance">No ambulance needed</option>
+        <label for="phone-number">Phone Number:</label>
+        <input type="tel" id="phone-number" required placeholder="e.g. +1234567890">
+
+        <label>1. Select the service:</label>
+        <div id="services-options">
+            <div class="service-option" data-service="police" onclick="selectService('police')">
+                <img src="police.png" alt="Police">
+                <p>Police</p>
+            </div>
+            <div class="service-option" data-service="ambulance" onclick="selectService('ambulance')">
+                <img src="ambulance.png" alt="Ambulance">
+                <p>Ambulance</p>
+            </div>
+            <div class="service-option" data-service="fireBrigade" onclick="selectService('fireBrigade')">
+                <img src="fire.png" alt="Fire Brigade">
+                <p>Fire Brigade</p>
+            </div>
+        </div>
+
+        <label for="incident">2. Select the type of incident:</label>
+        <select id="incident" onchange="toggleAmbulanceOptions()">
+            <option value="">-- Select the type of incident --</option>
         </select>
-    </div>
 
-    <button onclick="sendNotification()">Send a notification</button>
+        <div id="ambulance-options">
+            <label for="ambulance-accident">Select the additional option:</label>
+            <select id="ambulance-accident">
+                <option value="ambulance_fire">Ambulance and fire brigade needed</option>
+                <option value="ambulance">Ambulance needed</option>
+                <option value="no_ambulance">No ambulance needed</option>
+            </select>
+        </div>
 
-    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+        <button onclick="sendNotification()">Send a notification</button>
 
-    <script>
-        const servicesOptions = {
-            police: ["Road accident", "Theft", "Assault", "Terrorist attack"],
-            ambulance: ["Unconscious person", "Suspected stroke", "Suspected heart attack", "Sudden illness", "Exacerbation of chronic disease", "Injury or fracture"],
-            fireBrigade: ["Fire", "Road accident", "Chemical leak", "Flooding", "Removal of insect nest"]
-        };
+        <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+        <div id="error-message" class="error"></div>
 
-        const notifications = {
-            road_accident: { ambulance_fire: ["Police", "Fire Brigade", "Ambulance"], ambulance: ["Police", "Ambulance"], no_ambulance: ["Police"] },
-            theft: ["Police"],
-            assault: ["Police"],
-            terrorist_attack: ["Police", "Fire Brigade", "Ambulance"],
-            unconscious_person: ["Police", "Ambulance"],
-            suspected_stroke: ["Ambulance"],
-            suspected_heart_attack: ["Ambulance"],
-            sudden_illness: ["Ambulance"],
-            exacerbation_of_chronic_disease: ["Ambulance"],
-            injury_or_fracture: ["Ambulance"],
-            fire: ["Fire Brigade"],
-            flooding: ["Fire Brigade"],
-            chemical_leak: ["Fire Brigade", "Ambulance", "Police"],
-            removal_of_insect_nest: ["Fire Brigade"]
-        };
+        <script>
+            const servicesOptions = {
+                police: ["Road accident", "Theft", "Assault", "Terrorist attack"],
+                ambulance: ["Unconscious person", "Suspected stroke", "Suspected heart attack", "Sudden illness", "Exacerbation of chronic disease", "Injury or fracture"],
+                fireBrigade: ["Fire", "Road accident", "Chemical leak", "Flooding", "Removal of insect nest"]
+            };
 
-        let selectedService = "";
+            const notifications = {
+                road_accident: { ambulance_fire: ["Police", "Fire Brigade", "Ambulance"], ambulance: ["Police", "Ambulance"], no_ambulance: ["Police"] },
+                theft: ["Police"],
+                assault: ["Police"],
+                terrorist_attack: ["Police", "Fire Brigade", "Ambulance"],
+                unconscious_person: ["Police", "Ambulance"],
+                suspected_stroke: ["Ambulance"],
+                suspected_heart_attack: ["Ambulance"],
+                sudden_illness: ["Ambulance"],
+                exacerbation_of_chronic_disease: ["Ambulance"],
+                injury_or_fracture: ["Ambulance"],
+                fire: ["Fire Brigade"],
+                flooding: ["Fire Brigade"],
+                chemical_leak: ["Fire Brigade", "Ambulance", "Police"],
+                removal_of_insect_nest: ["Fire Brigade"]
+            };
 
-        function selectService(service) {
-            selectedService = service;
-            updateOptions();
-            
-            // Clear previous selections and highlight the selected service
-            document.querySelectorAll('.service-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector(`[data-service="${service}"]`).classList.add('selected');
-        }
+            let selectedService = "";
 
-        function updateOptions() {
-            const incident = document.getElementById("incident");
-            incident.innerHTML = '<option value="">-- Select the type of incident --</option>';
-
-            if (selectedService && servicesOptions[selectedService]) {
-                servicesOptions[selectedService].forEach(option => {
-                    incident.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
+            function selectService(service) {
+                selectedService = service;
+                updateOptions();
+                
+                // Clear previous selections and highlight the selected service
+                document.querySelectorAll('.service-option').forEach(option => {
+                    option.classList.remove('selected');
                 });
-            }
-        }
-
-        function toggleAmbulanceOptions() {
-            document.getElementById("ambulance-options").style.display = document.getElementById("incident").value === "road_accident" ? "block" : "none";
-        }
-
-        function sendNotification() {
-            const incident = document.getElementById("incident").value;
-            const ambulanceOption = document.getElementById("ambulance-accident").value;
-            let result = "";
-
-            if (incident === "road_accident") {
-                result = `Application sent to: ${notifications[incident][ambulanceOption].join(", ")}`;
-            } else if (notifications[incident]) {
-                result = `Application sent to: ${notifications[incident].join(", ")}`;
-            } else {
-                result = "The correct incident type was not selected.";
+                document.querySelector(`[data-service="${service}"]`).classList.add('selected');
             }
 
-            document.getElementById("result").innerText = result;
-        }
-    </script></center>
+            function updateOptions() {
+                const incident = document.getElementById("incident");
+                incident.innerHTML = '<option value="">-- Select the type of incident --</option>';
+
+                if (selectedService && servicesOptions[selectedService]) {
+                    servicesOptions[selectedService].forEach(option => {
+                        incident.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
+                    });
+                }
+            }
+
+            function toggleAmbulanceOptions() {
+                document.getElementById("ambulance-options").style.display = document.getElementById("incident").value === "road_accident" ? "block" : "none";
+            }
+
+            function validateInputs() {
+                const firstName = document.getElementById("first-name").value.trim();
+                const lastName = document.getElementById("last-name").value.trim();
+                const phoneNumber = document.getElementById("phone-number").value.trim();
+                const errorMessage = document.getElementById("error-message");
+                
+                // Clear previous error messages
+                errorMessage.innerText = "";
+
+                // Validation
+                if (firstName.length < 2) {
+                    errorMessage.innerText += "First name must be at least 2 characters long.\n";
+                }
+                if (lastName.length < 2) {
+                    errorMessage.innerText += "Last name must be at least 2 characters long.\n";
+                }
+                if (phoneNumber.length < 6 || !/^\d+$/.test(phoneNumber)) {
+                    errorMessage.innerText += "Phone number must be at least 6 digits long and contain only numbers.\n";
+                }
+
+                return errorMessage.innerText === ""; // Return true if no errors
+            }
+
+            function sendNotification() {
+                if (!validateInputs()) {
+                    return; // Stop if validation fails
+                }
+
+                const incident = document.getElementById("incident").value;
+                const ambulanceOption = document.getElementById("ambulance-accident").value;
+                const firstName = document.getElementById("first-name").value;
+                const lastName = document.getElementById("last-name").value;
+                const phoneNumber = document.getElementById("phone-number").value;
+                let result = "";
+
+                if (incident === "road_accident") {
+                    result = `Application sent to: ${notifications[incident][ambulanceOption].join(", ")}`;
+                } else if (notifications[incident]) {
+                    result = `Application sent to: ${notifications[incident].join(", ")}`;
+                } else {
+                    result = "The correct incident type was not selected.";
+                }
+
+                // Display the user's information
+                result += `<br>First Name: ${firstName}<br>`;
+                result += `Last Name: ${lastName}<br>`;
+                result += `Phone Number: ${phoneNumber}`;
+                document.getElementById("result").innerHTML = result;
+            }
+        </script>
+    </center>
 </body>
 </html>
