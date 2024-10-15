@@ -15,13 +15,22 @@ model Profession {
   name         String
   role         Role
   workerLevel  Level
-  email        String
+  email        String    @unique
   phoneNumber  Int
+  Location     Location?
   currentEvent String?
   pastEvents   Event[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime?
   deletedAt    DateTime?
+}
+
+model Location {
+  latitude     Float
+  longtitude   Float
+  checkedAt    DateTime
+  profession   Profession @relation(fields: [professionId], references: [id])
+  professionId String     @unique
 }
 
 model Event {
