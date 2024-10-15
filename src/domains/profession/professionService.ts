@@ -1,5 +1,5 @@
 import { IProfessionAdapter } from "./professionAdapter";
-import { ProfessionToCreate } from "./professionTypes";
+import { ProfessionToCreate, ProfessionToUpdate } from "./professionTypes";
 
 export class professionService {
   constructor(private readonly professionAdapter: IProfessionAdapter) {}
@@ -14,10 +14,7 @@ export class professionService {
 
   async getProfession(id: string) {
     const profession = await this.professionAdapter.getOne(id);
-    if (profession) {
-      return profession;
-    }
-    throw new Error(`Profession with ${id} not found`);
+    return profession;
   }
 
   async deleteProfession(id: string) {
@@ -25,7 +22,7 @@ export class professionService {
     await this.professionAdapter.deleteOne(id);
   }
 
-  async updateProfession(id: string, data: ProfessionToCreate) {
+  async updateProfession(id: string, data: ProfessionToUpdate) {
     await this.getProfession(id);
     await this.professionAdapter.updateOne(id, data);
   }
