@@ -5,7 +5,7 @@ import { Level, Profession, Role } from "./professionTypes";
 export interface IProfessionAdapter {
   createOne(data: any): Promise<void>;
   getAll(): Promise<Profession[]>;
-  getOne(id: string): Promise<Profession | null>;
+  getOne(id: string): Promise<Profession>;
   deleteOne(id: string): Promise<void>;
   updateOne(id: string, data: any): Promise<void>;
 }
@@ -26,18 +26,28 @@ export class ProfessionAdapter implements IProfessionAdapter {
   }
 
   async getOne(id: string) {
-    const one = await prisma.profession.findUnique({ where: { id } });
-    return one;
+    const one = await prisma.profession.findUnique({
+      where: { id: id, deletedAt: null },
+    });
+    if (one) {
+      return one;
+    }
+    throw new Error(`Profession ${id} not found`);
   }
 
   async deleteOne(id: string) {
+    await this.getOne(id);
     await prisma.profession.update({
-      where: { id: id },
+      where: { id: id, deletedAt: null },
       data: { deletedAt: new Date() },
     });
   }
 
   async updateOne(id: string, data: any) {
-    await prisma.profession.update({ where: { id: id }, data: data });
+    await this.getOne(id);
+    await prisma.profession.update({
+      where: { id: id, deletedAt: null },
+      data: { updatedAt: new Date(), ...data },
+    });
   }
 }
