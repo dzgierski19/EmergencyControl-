@@ -5,9 +5,17 @@ import {
   EventToUpdate,
   Level,
   NUMBER_LEVEL_MAPPER,
+  Event,
 } from "./eventTypes";
 
-export interface IEventService {}
+export interface IEventService {
+  createEvent(data: EventToCreate): Promise<void>;
+  addWorkerToEvent(eventId: string, workerId?: string): Promise<void>;
+  getAllEvents(): Promise<Event[]>;
+  getEvent(eventId: string): Promise<Event>;
+  deleteEvent(eventId: string): Promise<void>;
+  updateEvent(eventId: string, data: EventToUpdate): Promise<void>;
+}
 
 export class EventService implements IEventService {
   constructor(
@@ -16,19 +24,27 @@ export class EventService implements IEventService {
   ) {}
 
   async createEvent(data: EventToCreate) {
-    const { workerId, eventLevel } = data;
+    await this.eventAdapter.createOne(data);
+  }
+
+  async addWorkerToEvent(eventId: string, workerId?: string) {
+    this.isWorkerOnThisEvent(eventId);
+    const { eventLevel } = await this.getEvent(eventId);
     if (workerId) {
-      const worker = await this.professionService.getProfession(workerId);
-      this.compareLevels(worker.workerLevel, eventLevel);
-      await this.eventAdapter.createOne(data);
+      await this.isWorkerAlreadyOnAnotherEvent(workerId);
+      const { workerLevel } = await this.professionService.getProfession(
+        workerId
+      );
+      this.compareLevels(workerLevel, eventLevel);
+      await this.updateEvent(eventId, { workerId: workerId });
       return;
     }
     const filteredWorkers = await this.professionService.getProfessionsByLevel(
       eventLevel
     );
     if (filteredWorkers.length) {
-      data.workerId = filteredWorkers[0].id;
-      await this.eventAdapter.createOne(data);
+      const firstWorker = filteredWorkers[0].id;
+      await this.updateEvent(eventId, { workerId: firstWorker });
       return;
     }
     throw new Error("No suitable workers found");
@@ -41,8 +57,8 @@ export class EventService implements IEventService {
   }
 
   async getEvent(id: string) {
-    const profession = await this.eventAdapter.getOne(id);
-    return profession;
+    const event = await this.eventAdapter.getOne(id);
+    return event;
   }
 
   async deleteEvent(id: string) {
@@ -53,6 +69,24 @@ export class EventService implements IEventService {
   async updateEvent(id: string, data: EventToUpdate) {
     await this.getEvent(id);
     await this.eventAdapter.updateOne(id, data);
+  }
+
+  private async isWorkerAlreadyOnAnotherEvent(workerId: string) {
+    const { currentEventId } = await this.professionService.getProfession(
+      workerId
+    );
+    if (currentEventId) {
+      throw new Error(
+        `Worker ${workerId} is already on event ${currentEventId}`
+      );
+    }
+  }
+
+  private async isWorkerOnThisEvent(eventId: string) {
+    const { workerId } = await this.getEvent(eventId);
+    if (workerId) {
+      throw new Error(`Worker ${workerId} is already on this event`);
+    }
   }
 
   private compareLevels(professionLevel: Level, eventLevel: Level) {
