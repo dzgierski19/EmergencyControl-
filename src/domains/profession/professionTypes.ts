@@ -15,6 +15,12 @@ export const LEVELS = {
 
 export type Level = (typeof LEVELS)[keyof typeof LEVELS];
 
+export const NUMBER_LEVEL_MAPPER: Record<Level, number> = {
+  [LEVELS.BEGINNER]: 1,
+  [LEVELS.INTERMEDIATE]: 2,
+  [LEVELS.ADVANCED]: 3,
+};
+
 export type Profession = {
   id: string;
   name: string;
@@ -22,10 +28,10 @@ export type Profession = {
   workerLevel: Level;
   email: string;
   phoneNumber: number;
-  currentEventId: string | null;
+  currentEventId?: string | null;
   createdAt: Date;
-  deletedAt: Date | null;
-  updatedAt: Date | null;
+  deletedAt?: Date | null;
+  updatedAt?: Date | null;
 };
 
 export type ProfessionToCreate = Omit<
