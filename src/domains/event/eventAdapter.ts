@@ -1,16 +1,15 @@
 import { prisma } from "../../../prisma/prisma";
 import { Event } from "./eventTypes";
 
-export interface IProfessionAdapter {
+export interface IEventAdapter {
   createOne(data: any): Promise<void>;
   getAll(): Promise<Event[]>;
   getOne(id: string): Promise<Event>;
-  getAllByWorkerId(id: string): Promise<Event[]>;
   deleteOne(id: string): Promise<void>;
   updateOne(id: string, data: any): Promise<void>;
 }
 
-export class ProfessionAdapter implements IProfessionAdapter {
+export class EventAdapter implements IEventAdapter {
   async createOne(data: any) {
     await prisma.event.create({
       data: data,
@@ -33,14 +32,6 @@ export class ProfessionAdapter implements IProfessionAdapter {
       return one;
     }
     throw new Error(`Event ${id} not found`);
-  }
-
-  async getAllByWorkerId(id: string) {
-    const all = await prisma.event.findMany({
-      where: { deletedAt: null, workerId: id },
-    });
-    console.log(all);
-    return all;
   }
 
   async deleteOne(id: string) {
