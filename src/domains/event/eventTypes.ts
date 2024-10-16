@@ -27,10 +27,10 @@ export type Event = {
   additionalInfo?: string | null;
   eventLevel: Level;
   status?: Status;
-  workerId?: string;
+  workerId?: string | null;
   createdAt: Date;
-  updatedAt?: Date | null;
-  deletedAt?: Date | null;
+  updatedAt: Date | null;
+  deletedAt: Date | null;
 };
 
 export type EventToCreate = Omit<
