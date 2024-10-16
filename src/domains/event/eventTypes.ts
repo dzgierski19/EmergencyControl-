@@ -15,21 +15,27 @@ export const LEVELS = {
 
 export type Level = (typeof LEVELS)[keyof typeof LEVELS];
 
-export type Event = {
-  id: String;
-  title: String;
-  additionalInfo: String | null;
-  eventLevel: Level;
-  status: Status;
-  workerId: String;
-  createdAt: Date;
-  updatedAt: Date | null;
-  deletedAt: Date | null;
+export const NUMBER_LEVEL_MAPPER: Record<Level, number> = {
+  [LEVELS.BEGINNER]: 1,
+  [LEVELS.INTERMEDIATE]: 2,
+  [LEVELS.ADVANCED]: 3,
 };
 
-// export type ProfessionToCreate = Omit<
-//   Profession,
-//   "id" | "createdAt" | "deletedAt" | "updatedAt"
-// >;
+export type Event = {
+  id: string;
+  title: string;
+  additionalInfo?: string | null;
+  eventLevel: Level;
+  status?: Status;
+  workerId?: string;
+  createdAt: Date;
+  updatedAt?: Date | null;
+  deletedAt?: Date | null;
+};
 
-// export type ProfessionToUpdate = Partial<ProfessionToCreate>;
+export type EventToCreate = Omit<
+  Event,
+  "id" | "createdAt" | "deletedAt" | "updatedAt"
+>;
+
+export type EventToUpdate = Partial<EventToCreate>;
