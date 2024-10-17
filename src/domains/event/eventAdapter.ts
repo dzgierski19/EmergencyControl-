@@ -25,8 +25,8 @@ export class EventAdapter implements IEventAdapter {
   }
 
   async getOne(id: string) {
-    const one = await prisma.event.findUnique({
-      where: { id: id, deletedAt: null },
+    const one = await prisma.event.findFirst({
+      where: { id: id },
     });
     if (one) {
       return one;
