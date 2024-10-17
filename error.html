@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bare Bones Layout</title>
+        <meta name="description" content="404 page">
+        <meta name="author" content="HaplessWhiteCrow">
+        <!-- Essential Meta Tags-->
+         <!--
+        <meta property="og:title" content="A brief description about this page">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="image.png">
+        <meta property="og:url" content="https://www.thiswebsite link to this website"> 
+        <meta name="twitter:card" content="summary_large_image">
+        -->
+        <!--Non essential, but recommended-->
+        <!--
+        <meta property="og:description" content="A brief description. What this page is about">
+        <meta property="og:site_name" content="Website Name">
+        <meta name="twitter:image:alt" content="Alt text for image"> 
+        -->
+
+        <!--Non-Essential, But required for Analytics-->
+        <!--
+        <meta propert="fb:app_id" content="your_app_id">
+        --> 
+
+        <!--Other-->
+        
+        <!--
+        <meta property="pg:locale" content="Language of the content">
+        -->
+
+        <!--ikons in browser-->
+        
+        <!--
+        <link rel="icon" href="/favicon.ico">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        -->
+
+        <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            overflow-x: hidden;
+        }
+
+        header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+        }
+
+        .logo img{
+            height: 50px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .burger{
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .burger div{
+            width: 25px;
+            width: 3px;
+            background-color: white;
+            margin: 5px 0;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px auto;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 200px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }     
+
+        main{
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(253,209,0,255);
+        }
+
+        main img{
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        main p{
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        footer{
+            background-color: #333;
+            color: #ddd;
+            text-align: center;
+            padding: 10px 20px;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer a{
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover{
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                width: 100%;
+                text-align: center;
+            }
+
+            .burger{
+                display: flex;
+            }
+
+            nav a {
+                display: none;
+                flex-direction: column;
+                text-align: center;
+                width: 100%;
+                padding: 10px;
+            }
+
+            .logo img {
+                height: 40px; 
+            }
+
+       
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .button {
+                width: 80%;
+                margin: 10px auto;
+            }
+
+            main p{
+                font-size: 1rem;
+            }
+        }
+
+       @media (max-width: 480px) {
+            .button {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            main p{
+                font-size: 0.9rem;
+            }
+        }
+        </style>
+    </head>
+
+    
+    <body>
+        <header>
+            <!--Website name or logo-->
+            <div class="logo">
+                <a href="index.html"><img src="err.jpg" alt="Logo"></a>
+            </div>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+        <nav id="nav-list">
+            <!--Website navigation-->
+                    
+                    <a href="index.html">Home</a>                
+                    <a href="">Profile</a>           
+                    <a href="">Services</a> 
+                    <a href="">Contact</a>
+                
+
+        </nav>
+    </header>
+        <main>
+            <!--Main content-->
+            <img src="err.jpg" alt="Error 404 image">
+            <p>
+                Sorry, the page you're looking for doesn't exist. <br>
+                Please report the problem.
+            </p>
+            <div class="button-container">
+                <a href="index.html" class="button">Home</a>
+                <a href="report.html" class="button">Report</a>
+            </div>
+        </main>
+        <footer>
+            <!--Copyrigh notices and othe footer links and content-->
+            <p>&copy; 2024 WebsiteName. All rights reserved.</p>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="contact.html">Contact Us</a>
+        </footer>
+       
+        <script>
+           function    toggleMenu(){
+                var navList=document.getElementById("nav-list");
+                navList.classList.toggle("active");
+                }
+
+        </script>
+    </body>
+</html>

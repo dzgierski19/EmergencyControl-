@@ -21,17 +21,24 @@
 </head>
 <body>
     <h1>Wybierz odpowiednie służby i rodzaj zdarzenia</h1>
+    <!--Formularz dla miejsca zdarzenia-->
+    <label for="place">Miejsce zdarzenia:</label>
+    <input type="text" id="place" readonly placeholder="Pobieranie lokalizacji...">
+    <!--Formularz dla czasu zdarzenia-->
+    <label for="time"> Czas zdarzenia:</label>
+    <input type="datetime-local" id="time">
 
-    <label for="sluzby">Wybierz służby:</label>
-    <select id="sluzby" onchange="updateOptions()">
+    
+    <label for="service">Wybierz służby:</label>
+    <select id="service" onchange="updateOptions()">
         <option value="">-- Wybierz służbę --</option>
-        <option value="policja">Policja</option>
+        <option value="police">Policja</option>
         <option value="karetka">Karetka Pogotowia</option>
         <option value="straz">Straż Pożarna</option>
     </select>
 
-    <label for="zdarzenie">Wybierz rodzaj zdarzenia:</label>
-    <select id="zdarzenie" onchange="toggleKaretkaOpcje()">
+    <label for="event">Wybierz rodzaj zdarzenia:</label>
+    <select id="event" onchange="toggleKaretkaOpcje()">
         <option value="">-- Wybierz rodzaj zdarzenia --</option>
     </select>
 
@@ -44,13 +51,16 @@
         </select>
     </div>
 
-    <button onclick="wyslijZgloszenie()">Wyślij zgłoszenie</button>
+    <button onclick="sendReport()">Wyślij zgłoszenie</button>
 
-    <div id="wynik" style="margin-top: 20px; font-weight: bold;"></div>
+    <div id="result" style="margin-top: 20px; font-weight: bold;">
+
+        
+    </div>
 
     <script>
-        const sluzbyOpcje = {
-            policja: ["Wypadek drogowy", "Kradzież", "Napad", "Atak terrorystyczny"],
+        const serviceOption = {
+            police: ["Wypadek drogowy", "Kradzież", "Napad", "Atak terrorystyczny"],
             karetka: ["Osoba nieprzytomna", "Podejrzenie udaru", "Podejrzenie zawału", "Nagłe zachorowanie", "Zaostrzenie choroby przewlekłej", "Uraz lub złamanie"],
             straz: ["Pożar", "Wypadek drogowy", "Wyciek chemiczny", "Zalanie", "Usunięcie gniazda owadów"]
         };
@@ -73,35 +83,88 @@
         };
 
         function updateOptions() {
-            const sluzby = document.getElementById("sluzby").value;
-            const zdarzenie = document.getElementById("zdarzenie");
-            zdarzenie.innerHTML = '<option value="">-- Wybierz rodzaj zdarzenia --</option>';
+            const service = document.getElementById("service").value;
+            const event = document.getElementById("event");
+            event.innerHTML = '<option value="">-- Wybierz rodzaj zdarzenia --</option>';
 
-            if (sluzby && sluzbyOpcje[sluzby]) {
-                sluzbyOpcje[sluzby].forEach(option => {
-                    zdarzenie.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
+            if (service && serviceOption[service]) {
+                serviceOption[service].forEach(option => {
+                    event.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
                 });
             }
         }
 
         function toggleKaretkaOpcje() {
-            document.getElementById("karetka-opcje").style.display = document.getElementById("zdarzenie").value === "wypadek_drogowy" ? "block" : "none";
+            document.getElementById("karetka-opcje").style.display = document.getElementById("event").value === "wypadek_drogowy" ? "block" : "none";
         }
 
-        function wyslijZgloszenie() {
-            const zdarzenie = document.getElementById("zdarzenie").value;
+        function sendReport() {
+            const event = document.getElementById("event").value;
             const karetkaOpcja = document.getElementById("karetka-wypadek").value;
-            let wynik = "";
+            const place = document.getElementById("place").value;
+            const time= document.getElementById("time").value;
+            let result = "";
 
-            if (zdarzenie === "wypadek_drogowy") {
-                wynik = `Zgłoszenie wysłane do: ${zgloszenia[zdarzenie][karetkaOpcja].join(", ")}`;
-            } else if (zgloszenia[zdarzenie]) {
-                wynik = `Zgłoszenie wysłane do: ${zgloszenia[zdarzenie].join(", ")}`;
+            if (event === "wypadek_drogowy") {
+                result = `Zgłoszenie wysłane do: ${zgloszenia[event][karetkaOpcja].join(", ")}`;
+            } else if (zgloszenia[event]) {
+                result = `Zgłoszenie wysłane do: ${zgloszenia[event].join(", ")}`;
             } else {
-                wynik = "Nie wybrano poprawnego rodzaju zdarzenia.";
+                result = "Nie wybrano poprawnego rodzaju zdarzenia.";
             }
 
-            document.getElementById("wynik").innerText = wynik;
+            document.getElementById("result").innerText = result;
+        }
+
+        /*
+        Ta część musi automatycznie pobierać geolokacja i czas przy lądowaniu strony. Podaje info o geo jako szerokość i długość (można podlączyć API)
+        */
+
+        function getlocation(){ //pobiera geo
+            const placeInput = document.getElementById("place");
+
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                placeInput.placeholder = "Geolokalizacja nie jest wspierana przez tę przeglądarke"
+            }
+        }
+
+        function showPosition(showPosition){
+            const placeInput = document.getElementById("place");
+            const latitude = position.coords.latitude.toFixed(6);
+            const longitude = position.coords.longitude.toFixed(6);
+            placeInput.value = "Szerokość: ${latitude}, dlugość: ${longitude}";
+        }
+
+        function setCurrentTime(){
+            const timeInput =document.getElementById("time")
+            const now = new Date();
+            const localISOTime =now.toISOString().slice(0,16);
+            timeInput.value = localISOTime;
+        }
+        
+        function showError(error){
+            const placeInput =document.getElementById("place");
+            switch(error.code){
+                case error.PERMISSION_DENIED:
+                    placeInput.placeholder = "Użytkownik odmówił w udostępnieniu geolokalizacji."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    placeInput = "Informacja o geolokolizacji nie jest dostępna."
+                    break;
+                case error.TIMEOUT:
+                    placeInput.placeholder = "Przekroczono czas oczekiwania na lokalizacje."
+                break;    
+            }
+
+        }
+
+
+
+        window.onload = function(){
+            getlocation();
+            setCurrentTime();
         }
     </script>
 </body>
