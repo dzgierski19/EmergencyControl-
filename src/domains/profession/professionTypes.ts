@@ -29,6 +29,7 @@ export type Profession = {
   email: string;
   phoneNumber: number;
   currentEventId?: string | null;
+  events?: Event[];
   createdAt: Date;
   deletedAt?: Date | null;
   updatedAt?: Date | null;
