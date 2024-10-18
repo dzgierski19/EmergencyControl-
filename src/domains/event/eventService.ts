@@ -6,6 +6,7 @@ import {
   Level,
   NUMBER_LEVEL_MAPPER,
   Event,
+  STATUSES,
 } from "./eventTypes";
 
 export interface IEventService {
@@ -15,6 +16,10 @@ export interface IEventService {
   getEvent(eventId: string): Promise<Event>;
   deleteEvent(eventId: string): Promise<void>;
   updateEvent(eventId: string, data: EventToUpdate): Promise<void>;
+  acceptEvent(eventId: string, professionId: string): Promise<void>;
+  finishEvent(eventId: string, professionId: string): Promise<void>;
+  cancelEvent(eventId: string, professionId: string): Promise<void>;
+  getAllEventsForProfession(professionId: string): Promise<Event[]>;
 }
 
 export class EventService implements IEventService {
@@ -28,7 +33,7 @@ export class EventService implements IEventService {
   }
 
   async addWorkerToEvent(eventId: string, workerId?: string) {
-    this.isWorkerOnThisEvent(eventId);
+    await this.isWorkerOnThisEvent(eventId);
     const { eventLevel } = await this.getEvent(eventId);
     if (workerId) {
       await this.isWorkerAlreadyOnAnotherEvent(workerId);
@@ -71,6 +76,11 @@ export class EventService implements IEventService {
     await this.eventAdapter.updateOne(id, data);
   }
 
+  async getAllEventsForProfession(professionId: string): Promise<Event[]> {
+    const allEvents = await this.getAllEvents();
+    return allEvents.filter((event) => event.workerId === professionId);
+  }
+
   private async isWorkerAlreadyOnAnotherEvent(workerId: string) {
     const { currentEventId } = await this.professionService.getProfession(
       workerId
@@ -83,8 +93,11 @@ export class EventService implements IEventService {
   }
 
   private async isWorkerOnThisEvent(eventId: string) {
-    const { workerId } = await this.getEvent(eventId);
-    if (workerId) {
+    const { workerId, status } = await this.getEvent(eventId);
+    if (status === STATUSES.CANCELLED || status === STATUSES.FINISHED) {
+      throw new Error(`Event ${eventId} is ${status}`);
+    }
+    if (status === STATUSES.IN_PROGRESS) {
       throw new Error(`Worker ${workerId} is already on this event`);
     }
   }
@@ -97,5 +110,52 @@ export class EventService implements IEventService {
         `You can't choose worker with ${professionLevel} level. Please choose someone with at least ${eventLevel} level`
       );
     }
+  }
+
+  // METHODS FOR USER
+
+  async acceptEvent(eventId: string, professionId: string) {
+    const { workerId } = await this.getEvent(eventId);
+    if (professionId === workerId) {
+      await this.updateEvent(eventId, { isAccepted: true });
+      await this.professionService.updateProfession(professionId, {
+        currentEventId: eventId,
+      });
+      await this.updateEvent(eventId, { status: STATUSES.IN_PROGRESS });
+      return;
+    }
+    throw new Error(
+      `Worker with id: ${professionId} is not added to this Event`
+    );
+  }
+
+  async cancelEvent(eventId: string, professionId: string) {
+    const { workerId } = await this.getEvent(eventId);
+    if (professionId === workerId) {
+      await this.updateEvent(eventId, { status: STATUSES.CANCELLED });
+      await this.updateEvent(eventId, { isAccepted: false });
+      await this.professionService.updateProfession(professionId, {
+        currentEventId: null,
+      });
+      return;
+    }
+    throw new Error(
+      `Worker with id: ${professionId} is not added to this Event`
+    );
+  }
+
+  async finishEvent(eventId: string, professionId: string) {
+    const { workerId, status } = await this.getEvent(eventId);
+    if (professionId === workerId && status === STATUSES.IN_PROGRESS) {
+      await this.updateEvent(eventId, { status: STATUSES.FINISHED });
+      await this.updateEvent(eventId, { isAccepted: true });
+      await this.professionService.updateProfession(professionId, {
+        currentEventId: null,
+      });
+      return;
+    }
+    throw new Error(
+      `Event with id: ${eventId} has bad status or worker with id: ${professionId} is not allowed to finish this event`
+    );
   }
 }
