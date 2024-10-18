@@ -45,4 +45,33 @@ export class EventController implements IEventController {
     await this.eventService.addWorkerToEvent(eventId);
     res.status(200).json({ message: "Worker added to event successfully" });
   };
+
+  acceptEvent = async (req: Request, res: Response) => {
+    const eventId = req.params.eventId;
+    const professionId = req.body.professionId;
+    await this.eventService.acceptEvent(eventId, professionId);
+    res.status(200).json({ message: "Event accepted successfully" });
+  };
+
+  finishEvent = async (req: Request, res: Response) => {
+    const eventId = req.params.eventId;
+    const professionId = req.body.professionId;
+    await this.eventService.finishEvent(eventId, professionId);
+    res.status(200).json({ message: "Event finished successfully" });
+  };
+
+  cancelEvent = async (req: Request, res: Response) => {
+    const eventId = req.params.eventId;
+    const professionId = req.body.professionId;
+    await this.eventService.cancelEvent(eventId, professionId);
+    res.status(200).json({ message: "Event cancelled successfully" });
+  };
+
+  getAllEventsForProfession = async (req: Request, res: Response) => {
+    const professionId = req.params.professionId;
+    const events = await this.eventService.getAllEventsForProfession(
+      professionId
+    );
+    res.status(200).json(events);
+  };
 }
