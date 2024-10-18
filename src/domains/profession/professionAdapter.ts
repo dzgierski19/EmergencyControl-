@@ -26,7 +26,7 @@ export class ProfessionAdapter implements IProfessionAdapter {
   }
 
   async getOne(id: string) {
-    const one = await prisma.profession.findUnique({
+    const one = await prisma.profession.findFirst({
       where: { id: id, deletedAt: null },
     });
     if (one) {
