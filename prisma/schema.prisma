@@ -31,14 +31,49 @@ model Event {
   worker         Profession @relation(fields: [authorId], references: [id])
   authorId       String
   createdAt      DateTime   @default(now())
+  =======
+  id             String     @id @default(uuid())
+  name           String
+  role           Role
+  workerLevel    Level
+  email          String     @unique
+  phoneNumber    Int
+  Location       Location?
+  currentEventId String?
+  Events         Event[]
+  createdAt      DateTime   @default(now())
   updatedAt      DateTime?
   deletedAt      DateTime?
+}
+
+model Location {
+  latitude     Float
+  longtitude   Float
+  checkedAt    DateTime
+  profession   Profession @relation(fields: [professionId], references: [id])
+  professionId String     @unique
+}
+
+model Event {
+  id             String      @id @default(uuid())
+  title          String
+  additionalInfo String?
+  eventLevel     Level
+  status         Status      @default(WAITING_FOR_ACTION)
+  worker         Profession? @relation(fields: [workerId], references: [id])
+  workerId       String?
+  isAccepted     Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  updatedAt DateTime?
+  deletedAt DateTime?
 }
 
 enum Role {
   POLICEMAN
   FIREFIGHTER
   PARAMEDIC
+  SOLDIER
 }
 
 enum Status {
