@@ -1,3 +1,4 @@
+import { Event } from "../event/eventTypes";
 import { IProfessionAdapter } from "./professionAdapter";
 import {
   Level,
@@ -42,6 +43,11 @@ export class ProfessionService implements IProfessionService {
   async deleteProfession(id: string) {
     await this.getProfession(id);
     await this.professionAdapter.deleteOne(id);
+  }
+
+  async showEventsForProfession(id: string) {
+    const { events } = await this.getProfession(id);
+    return events;
   }
 
   async updateProfession(id: string, data: ProfessionToUpdate) {
