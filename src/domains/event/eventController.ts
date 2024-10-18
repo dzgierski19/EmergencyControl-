@@ -8,6 +8,7 @@ export interface IEventController {
   getEvent(req: Request, res: Response): Promise<void>;
   createEvent(req: Request, res: Response): Promise<void>;
   addWorkerToEvent(req: Request, res: Response): Promise<void>;
+  test(req: Request, res: Response): Promise<void>;
 }
 
 export class EventController implements IEventController {
@@ -73,5 +74,9 @@ export class EventController implements IEventController {
       professionId
     );
     res.status(200).json(events);
+  };
+
+  test = async (req: Request, res: Response) => {
+    res.status(200).json("TEST OK");
   };
 }
