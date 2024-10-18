@@ -8,7 +8,8 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "vercel-build": "echo hello"
   },
   "author": "Dawid Zgierski",
   "license": "ISC",
