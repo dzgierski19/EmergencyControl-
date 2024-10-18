@@ -6,6 +6,7 @@ import { ProfessionService } from "./domains/profession/professionService";
 import { EventAdapter } from "./domains/event/eventAdapter";
 import { EventService } from "./domains/event/eventService";
 import { EventController } from "./domains/event/eventController";
+import { ProfessionController } from "./domains/profession/professionController";
 
 export const professionAdapter = new ProfessionAdapter();
 export const professionService = new ProfessionService(professionAdapter);
@@ -15,3 +16,4 @@ export const eventController = new EventController(
   eventService,
   professionService
 );
+export const professionController = new ProfessionController(professionService);
