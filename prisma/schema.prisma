@@ -19,7 +19,7 @@ model Profession {
   phoneNumber    Int
   Location       Location?
   currentEventId String?
-  pastEvents     Event[]
+  Events         Event[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime?
   deletedAt      DateTime?
