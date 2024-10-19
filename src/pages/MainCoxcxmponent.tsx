@@ -6,7 +6,7 @@ import CustomMarker from '../components/CustomMarker/CustomMarker'
 
 const position: LatLngExpression = [50.06465, 19.94498]
 
-export default function MainComponent() {
+export default function MaindfdfComponent() {
 	const [mapType, setMapType] = useState<'basic' | 'detailed' | 'topo'>('basic')
 	const [policePosition, setPolicePosition] = useState<LatLngExpression>([50.06465, 19.94498])
 	const [fireTruckPosition, setFireTruckPosition] = useState<LatLngExpression>([50.06665, 19.94298])

@@ -1,8 +1,9 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 // pages
-import MainComponent from './pages/MainComponent'
 import LoginPage from './pages/LoginPage'
+import PanelLayout from './layout/PanelLayout'
+import MainPage from './pages/MainPage'
 
 const router = createBrowserRouter([
 	{
@@ -11,7 +12,17 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/',
-		element: <MainComponent />,
+		element: <Navigate to='/login' replace />,
+	},
+	{
+		path: '/panel',
+		element: <PanelLayout />,
+		children: [
+			{
+				index: true,
+				element: <MainPage />,
+			},
+		],
 	},
 ])
 
