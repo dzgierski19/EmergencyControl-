@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import { eventRouter } from "./domains/event/eventRouter";
-import { professionRouter } from "./domains/profession/professionRouter";
+import { eventRouter } from "./src/domains/event/eventRouter";
+import { professionRouter } from "./src/domains/profession/professionRouter";
 
 const app = express();
 const port = 8000;
