@@ -10,14 +10,13 @@ body {
 }
 
 html {
-	font-size: 62.5%;
 	scroll-behavior: smooth;
 }
 
 body {
 	color: #1C2434;
 	background-color: #F1F5F9;
-	font-size: 2rem;
+	/* font-size: 2rem; */
 }
 
 body.dark {

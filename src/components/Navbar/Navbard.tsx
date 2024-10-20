@@ -6,7 +6,7 @@ import { Avatar } from '../Avatar/Avatar'
 export default function Navbar() {
 	return (
 		<nav className='flex px-12 justify-between items-center sticky top-0 border-b border-slate-500 bg-slate-200 '>
-			<div className='flex items-center gap-5 ml-6 py-4'>
+			<div className='flex items-center gap-5 ml-6 py-2'>
 				<Breadcrumbs />
 				<TimeDisplay />
 			</div>

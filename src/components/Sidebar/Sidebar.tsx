@@ -10,7 +10,7 @@ export function Sidebar() {
 					<li key={item.key} >
 						<Link
 							to={item.path}
-							className='flex items-center mt-2 p-4 transition-colors duration-300 hover:bg-red-300'>
+							className='flex items-center mt-2 p-3 transition-colors duration-300 hover:bg-red-300'>
 							<item.icon className='fill-black' />
 						</Link>
 					</li>

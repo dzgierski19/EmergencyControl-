@@ -16,10 +16,10 @@ export function TimeDisplay() {
 	const currentDay = daysOfWeek[time.getDay()]
 
 	return (
-		<div className='flex items-center ml-16 leading-5'>
-			<Clock className='w-6 h-6' />
-			<span className='ml-2 mr-5'>{time.toLocaleTimeString()}</span>
-			<span>{currentDay}</span>
+		<div className='flex items-center ml-16 text-2xl'>
+			<Clock className='w-6 h-6 transform translate-y-[1px]' />
+			<span className='ml-1 mr-4'>{time.toLocaleTimeString()}</span>
+			<span className='text-xl'>{currentDay}</span>
 		</div>
 	)
 }

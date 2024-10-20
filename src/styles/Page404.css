@@ -1,0 +1,48 @@
+.traffic-cone {
+	position: relative;
+	margin-top: -4rem;
+	width: 5rem;
+	height: 8rem;
+	background: linear-gradient(
+		to bottom,
+		rgba(253, 209, 0, 255) 0%,
+		rgba(253, 209, 0, 255) 12.5%,
+		rgb(233, 102, 20) 12.5%,
+		rgb(233, 102, 20) 37.5%,
+		white 37.5%,
+		white 60%,
+		rgb(233, 102, 20) 60%,
+		rgb(233, 102, 20) 80%,
+		white 80%,
+		white 100%,
+		rgb(233, 102, 20) 100%
+	);
+	clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+	display: inline-block;
+	border-radius: 10px;
+	z-index: 2;
+}
+
+.trapezoid {
+	position: relative;
+	width: 6.4rem;
+	height: 2.2rem;
+	background-color: rgb(233, 102, 20);
+	clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+	margin-top: -1.5rem;
+	border-radius: 10px;
+	z-index: 1;
+}
+
+@media (min-width: 1024px) {
+	.traffic-cone {
+		margin-top: -7rem;
+		width: 8rem;
+		height: 13rem;
+	}
+
+	.trapezoid {
+		width: 12.5rem;
+		height: 3rem;
+	}
+}

@@ -6,7 +6,7 @@ export function Breadcrumbs() {
 
 	return (
 		<div className='flex items-center text-[#8A99AF]'>
-			<h1 className='text-4xl capitalize leading-2 text-black'>{lastPathSegment || 'Brak'}</h1>
+			<h1 className='text-3xl capitalize leading-2 text-black'>{lastPathSegment || 'Brak'}</h1>
 		</div>
 	)
 }

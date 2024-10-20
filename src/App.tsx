@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import PanelLayout from './layout/PanelLayout'
 import MainPage from './pages/MainPage'
+import Page404 from './pages/Page404'
 
 const router = createBrowserRouter([
 	{
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	{
+		path: '*',
+		element: <Page404 />,
+	}
 ])
 
 export default function AppRouter() {
