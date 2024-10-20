@@ -4,8 +4,6 @@ require("express-async-errors");
 
 export const eventRouter = Router();
 
-eventRouter.get("/", eventController.test);
-
 eventRouter.get("/events", eventController.getEvents);
 
 eventRouter.get("/events/:eventId", eventController.getEvent);
