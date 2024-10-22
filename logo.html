@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>EmergencyControlAPi Logo</title>
+        <meta name="description" content="Logo">
+        <meta name="author" content="HaplessWhiteCrow">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color:rgb(245,245,245) ;
+            }
+
+            form{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .login{
+                background-color: rgb(255,255,255);
+                padding: 1.5rem;
+                border: 0.5rem;
+                box-shadow: 0rem 0.2rem 1rem rgba(0,0,0,0.3);
+                width: 15rem;
+            }
+
+
+
+            h1{
+               margin-bottom: 1rem;
+               color: rgb(51,51,51);
+               text-align: center; 
+            }
+
+            .input{
+                margin-bottom: 0.7rem;
+                text-align: left;
+            }
+
+            .input label{
+                display: block;
+                margin-bottom: 0.2rem;
+                color: rgb(51,51,51);
+            }
+
+            .input input{
+                width: 100%;
+                color: rgb(255,255,255);
+                padding: 0.1rem;
+                border: 0.01rem solid rgb(51,51,51);
+                border-radius: 0.5rem;
+                font-size: 1rem;
+            }
+
+            .btn{
+                background-color:rgb(20,60,247);
+                color: rgb(255,255,255);
+                border: none;
+                padding: 0.1rem;
+                border-radius: 0.5rem;
+                width: 50%;
+                font-size: 0.9rem;
+                cursor: pointer;
+            }
+
+            .btn:hover{
+                background-color: rgb(2,39,204) ;
+            }
+
+            .signup{
+                margin-top: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .signup a{
+                color: rgb(20,60,247);
+                text-decoration: none;
+            }
+
+            .signup a:hover{
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login">
+            <h1>Login</h1>
+            <form action="#" method="post">
+                <div class="input">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="input">
+                    <label for="password"> Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p class="signup">Don't have an account? <a href="#"> Sign up</a></p>
+            </form>
+        </div>
+
+    </body>
+</html>
