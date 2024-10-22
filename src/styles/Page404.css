@@ -5,8 +5,8 @@
 	height: 8rem;
 	background: linear-gradient(
 		to bottom,
-		rgba(253, 209, 0, 255) 0%,
-		rgba(253, 209, 0, 255) 12.5%,
+		rgb(241, 245, 249) 0%,
+		rgb(241, 245, 249) 12.5%,
 		rgb(233, 102, 20) 12.5%,
 		rgb(233, 102, 20) 37.5%,
 		white 37.5%,
