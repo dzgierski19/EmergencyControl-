@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { eventController } from "../../IoC";
-require("express-async-errors");
 
 export const eventRouter = Router();
 
