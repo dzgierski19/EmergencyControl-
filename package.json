@@ -9,10 +9,8 @@
     "add-build"
 ],
   "scripts": {
-    "start": "nodemon src/main.ts",
-    "build": "rimraf dist && tsc",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist"
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon src/main.ts"
   },
   "author": "Dawid Zgierski",
   "license": "ISC",
