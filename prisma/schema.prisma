@@ -22,21 +22,15 @@ model Profession {
   role           Role
   workerLevel    Level
   email          String    @unique
-  phoneNumber    Int
-  Location       Location?
+  phoneNumber    Int       @unique
   currentEventId String?
-  Events         Event[]
+  events         Event[]
+  vehicle        Vehicle?  @relation(fields: [vehicleId], references: [id])
+  vehicleId      String?
+  isAvailable    Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime?
   deletedAt      DateTime?
-}
-
-model Location {
-  latitude     Float
-  longtitude   Float
-  checkedAt    DateTime
-  profession   Profession @relation(fields: [professionId], references: [id])
-  professionId String     @unique
 }
 
 model Event {
@@ -46,11 +40,38 @@ model Event {
   eventLevel     Level
   status         Status      @default(WAITING_FOR_ACTION)
   worker         Profession? @relation(fields: [workerId], references: [id])
-  workerId       String?
+  workerId       String      @unique
   isAccepted     Boolean     @default(false)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime?
   deletedAt      DateTime?
+}
+
+model Vehicle {
+  id          String       @id @default(uuid())
+  role        Role
+  type        VehicleType
+  seats       Int
+  emptySeats  Int
+  isAvailable Boolean      @default(true)
+  location    Location?    @relation(fields: [locationId], references: [id])
+  locationId  String?      @unique
+  profession  Profession[]
+}
+
+model Location {
+  id        String    @id @default(uuid())
+  latitude  Float
+  longitude Float
+  checkedAt DateTime
+  Vehicle   Vehicle[]
+}
+
+enum VehicleType {
+  MOTORCYCLE
+  CAR
+  HELICOPTER
+  MOTORBOAT
 }
 
 enum Role {
