@@ -28,7 +28,7 @@ export type Event = {
   eventLevel: Level;
   status?: Status;
   workerId?: string | null;
-  isAccepted: boolean;
+  isAccepted?: boolean;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
