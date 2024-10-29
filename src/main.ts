@@ -5,6 +5,9 @@ import { professionRouter } from "./domains/profession/professionRouter";
 import { swaggerSpecs } from "./swagger";
 import swaggerUI from "swagger-ui-express";
 
+const CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+
 const app = express();
 
 export const port = process.env.PORT || 8000;
@@ -15,7 +18,7 @@ app.use(eventRouter);
 
 app.use(professionRouter);
 
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup({ customCssUrl: CSS_URL }));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express on Vercel");
