@@ -25,8 +25,8 @@ export type Vehicle = {
   seats: number;
   emptySeats: number;
   isAvailable?: boolean;
-  profession: Profession[];
-  location: Location;
+  profession?: Profession[];
+  location?: Location;
   createdAt: Date;
   deletedAt?: Date | null;
   updatedAt?: Date | null;
