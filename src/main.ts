@@ -17,7 +17,7 @@ const options = {
       version: "1.0.0",
       description: "Express Emergency Control API",
     },
-    servers: [{ url: `http://localhost:${port}` }],
+    servers: [{ url: `/` }],
   },
   apis: [
     "./src/main.ts",
@@ -40,8 +40,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express on Vercel");
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
-// });
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
 
 export default app;
