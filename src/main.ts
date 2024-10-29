@@ -40,8 +40,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express on Vercel");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`);
+// });
 
 export default app;
