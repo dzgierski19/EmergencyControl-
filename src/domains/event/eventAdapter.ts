@@ -20,7 +20,6 @@ export class EventAdapter implements IEventAdapter {
     const all = await prisma.event.findMany({
       where: { deletedAt: null },
     });
-    console.log(all);
     return all;
   }
 

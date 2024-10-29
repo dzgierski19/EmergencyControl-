@@ -18,7 +18,6 @@ export class EventController implements IEventController {
 
   getEvents = async (req: Request, res: Response) => {
     const events = await this.eventService.getAllEvents();
-    console.log(events);
     res.status(200).json(events);
   };
 
