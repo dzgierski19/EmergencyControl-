@@ -1,5 +1,6 @@
-import { port } from "./main";
 import swaggerJSDoc from "swagger-jsdoc";
+
+const port = process.env.PORT || 8000;
 
 const options = {
   definition: {
