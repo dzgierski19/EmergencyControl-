@@ -10,7 +10,7 @@ const options = {
       description: "Express Emergency Control API",
     },
     servers: [
-      { url: `http://localhost:${port}`, description: "Local Server" },
+      // { url: `http://localhost:${port}`, description: "Local Server" },
       { url: "/", description: "Live Server" },
     ],
   },
