@@ -15,7 +15,7 @@ app.use(eventRouter);
 
 app.use(professionRouter);
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express on Vercel");
