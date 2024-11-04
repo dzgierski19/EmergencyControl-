@@ -7,6 +7,7 @@ import MainPage from './pages/MainPage'
 import Page404 from './pages/Page404'
 import CoordinatorsPage from './pages/CoordinatorsPage'
 import UnitsPage from './pages/UnitsPage'
+import AddNewCoordinatorPage from './pages/AddNewCoordinatorPage'
 
 const router = createBrowserRouter([
 	{
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
 			{
 				path: 'coordinators',
 				element: <CoordinatorsPage />,
+			},
+			{
+				path: 'new-coordinators',
+				element: <AddNewCoordinatorPage />,
 			},
 			{
 				path: 'units',

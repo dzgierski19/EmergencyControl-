@@ -1,27 +1,6 @@
-import { useEffect, useState } from 'react'
 import './RoadAdnimation.css'
 
 export function RoadAnimation() {
-	const [isScreenUnsupported, setIsScreenUnsupported] = useState(false)
-
-	useEffect(() => {
-		const checkScreenWidth = () => {
-			if (window.innerWidth > 1300) {
-				setIsScreenUnsupported(true)
-			} else {
-				setIsScreenUnsupported(false)
-			}
-		}
-		checkScreenWidth()
-
-		window.addEventListener('resize', checkScreenWidth)
-		return () => window.removeEventListener('resize', checkScreenWidth)
-	}, [])
-
-	if (!isScreenUnsupported) {
-		return null
-	}
-
 	return (
 		<div className="road">
 			<div className="police">

@@ -29,10 +29,10 @@ export default function PanelLayout() {
 				</div>
 			) : (
 				<>
-					<div className="flex-1 min-h-screen bg-gray-900">
+					<div className="flex-1 min-h-screen bg-gray-900 z-0">
 						<Sidebar />
 					</div>
-					<div className="flex flex-col flex-3 w-full">
+					<div className="flex flex-col flex-3 w-full z-0">
 						<Navbar />
 						<Outlet />
 						<Footer />

@@ -16,6 +16,7 @@ export const pathTranslations: { [key: string]: string } = {
 	panel: 'panel',
 	coordinators: 'Koordynatorzy',
 	units: 'Jednostki',
+	['new-coordinators']: 'Nowy kordynator',
 	// settings: 'Ustawienia',
 	// profile: 'Profil',
 	brak : 'Brak',
