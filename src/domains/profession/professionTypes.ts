@@ -41,3 +41,12 @@ export type ProfessionToCreate = Omit<
 >;
 
 export type ProfessionToUpdate = Partial<ProfessionToCreate>;
+
+export type Coordinator = Omit<Profession, "currentEventId" | "events">;
+
+export type CordinatorToCreate = Omit<
+  Coordinator,
+  "id" | "createdAt" | "deletedAt" | "updatedAt"
+>;
+
+export type CoordinatorToUpdate = Partial<CordinatorToCreate>;
