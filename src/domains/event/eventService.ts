@@ -16,9 +16,6 @@ export interface IEventService {
   getEvent(eventId: string): Promise<Event>;
   deleteEvent(eventId: string): Promise<void>;
   updateEvent(eventId: string, data: EventToUpdate): Promise<void>;
-  acceptEvent(eventId: string, professionId: string): Promise<void>;
-  finishEvent(eventId: string, professionId: string): Promise<void>;
-  cancelEvent(eventId: string, professionId: string): Promise<void>;
   getAllEventsForProfession(professionId: string): Promise<Event[]>;
 }
 
@@ -110,52 +107,5 @@ export class EventService implements IEventService {
         `You can't choose worker with ${professionLevel} level. Please choose someone with at least ${eventLevel} level`
       );
     }
-  }
-
-  // METHODS FOR USER
-
-  async acceptEvent(eventId: string, professionId: string) {
-    const { workerId } = await this.getEvent(eventId);
-    if (professionId === workerId) {
-      await this.updateEvent(eventId, { isAccepted: true });
-      await this.professionService.updateProfession(professionId, {
-        currentEventId: eventId,
-      });
-      await this.updateEvent(eventId, { status: STATUSES.IN_PROGRESS });
-      return;
-    }
-    throw new Error(
-      `Worker with id: ${professionId} is not added to this Event`
-    );
-  }
-
-  async cancelEvent(eventId: string, professionId: string) {
-    const { workerId } = await this.getEvent(eventId);
-    if (professionId === workerId) {
-      await this.updateEvent(eventId, { status: STATUSES.CANCELLED });
-      await this.updateEvent(eventId, { isAccepted: false });
-      await this.professionService.updateProfession(professionId, {
-        currentEventId: null,
-      });
-      return;
-    }
-    throw new Error(
-      `Worker with id: ${professionId} is not added to this Event`
-    );
-  }
-
-  async finishEvent(eventId: string, professionId: string) {
-    const { workerId, status } = await this.getEvent(eventId);
-    if (professionId === workerId && status === STATUSES.IN_PROGRESS) {
-      await this.updateEvent(eventId, { status: STATUSES.FINISHED });
-      await this.updateEvent(eventId, { isAccepted: true });
-      await this.professionService.updateProfession(professionId, {
-        currentEventId: null,
-      });
-      return;
-    }
-    throw new Error(
-      `Event with id: ${eventId} has bad status or worker with id: ${professionId} is not allowed to finish this event`
-    );
   }
 }
