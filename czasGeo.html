@@ -29,16 +29,16 @@
     <input type="datetime-local" id="time">
 
     
-    <label for="service">Wybierz służby:</label>
-    <select id="service" onchange="updateOptions()">
+    <label for="sluzby">Wybierz służby:</label>
+    <select id="sluzby" onchange="updateOptions()">
         <option value="">-- Wybierz służbę --</option>
-        <option value="police">Policja</option>
+        <option value="policja">Policja</option>
         <option value="karetka">Karetka Pogotowia</option>
         <option value="straz">Straż Pożarna</option>
     </select>
 
-    <label for="event">Wybierz rodzaj zdarzenia:</label>
-    <select id="event" onchange="toggleKaretkaOpcje()">
+    <label for="zdarzenie">Wybierz rodzaj zdarzenia:</label>
+    <select id="zdarzenie" onchange="toggleKaretkaOpcje()">
         <option value="">-- Wybierz rodzaj zdarzenia --</option>
     </select>
 
@@ -51,16 +51,13 @@
         </select>
     </div>
 
-    <button onclick="sendReport()">Wyślij zgłoszenie</button>
+    <button onclick="wyslijZgloszenie()">Wyślij zgłoszenie</button>
 
-    <div id="result" style="margin-top: 20px; font-weight: bold;">
-
-        
-    </div>
+    <div id="wynik" style="margin-top: 20px; font-weight: bold;"></div>
 
     <script>
-        const serviceOption = {
-            police: ["Wypadek drogowy", "Kradzież", "Napad", "Atak terrorystyczny"],
+        const sluzbyOpcje = {
+            policja: ["Wypadek drogowy", "Kradzież", "Napad", "Atak terrorystyczny"],
             karetka: ["Osoba nieprzytomna", "Podejrzenie udaru", "Podejrzenie zawału", "Nagłe zachorowanie", "Zaostrzenie choroby przewlekłej", "Uraz lub złamanie"],
             straz: ["Pożar", "Wypadek drogowy", "Wyciek chemiczny", "Zalanie", "Usunięcie gniazda owadów"]
         };
@@ -83,37 +80,37 @@
         };
 
         function updateOptions() {
-            const service = document.getElementById("service").value;
-            const event = document.getElementById("event");
-            event.innerHTML = '<option value="">-- Wybierz rodzaj zdarzenia --</option>';
+            const sluzby = document.getElementById("sluzby").value;
+            const zdarzenie = document.getElementById("zdarzenie");
+            zdarzenie.innerHTML = '<option value="">-- Wybierz rodzaj zdarzenia --</option>';
 
-            if (service && serviceOption[service]) {
-                serviceOption[service].forEach(option => {
-                    event.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
+            if (sluzby && sluzbyOpcje[sluzby]) {
+                sluzbyOpcje[sluzby].forEach(option => {
+                    zdarzenie.innerHTML += `<option value="${option.toLowerCase().replace(/ /g, "_")}">${option}</option>`;
                 });
             }
         }
 
         function toggleKaretkaOpcje() {
-            document.getElementById("karetka-opcje").style.display = document.getElementById("event").value === "wypadek_drogowy" ? "block" : "none";
+            document.getElementById("karetka-opcje").style.display = document.getElementById("zdarzenie").value === "wypadek_drogowy" ? "block" : "none";
         }
 
-        function sendReport() {
-            const event = document.getElementById("event").value;
+        function wyslijZgloszenie() {
+            const zdarzenie = document.getElementById("zdarzenie").value;
             const karetkaOpcja = document.getElementById("karetka-wypadek").value;
             const place = document.getElementById("place").value;
             const time= document.getElementById("time").value;
-            let result = "";
+            let wynik = "";
 
-            if (event === "wypadek_drogowy") {
-                result = `Zgłoszenie wysłane do: ${zgloszenia[event][karetkaOpcja].join(", ")}`;
-            } else if (zgloszenia[event]) {
-                result = `Zgłoszenie wysłane do: ${zgloszenia[event].join(", ")}`;
+            if (zdarzenie === "wypadek_drogowy") {
+                wynik = `Zgłoszenie wysłane do: ${zgloszenia[zdarzenie][karetkaOpcja].join(", ")}`;
+            } else if (zgloszenia[zdarzenie]) {
+                wynik = `Zgłoszenie wysłane do: ${zgloszenia[zdarzenie].join(", ")}`;
             } else {
-                result = "Nie wybrano poprawnego rodzaju zdarzenia.";
+                wynik = "Nie wybrano poprawnego rodzaju zdarzenia.";
             }
 
-            document.getElementById("result").innerText = result;
+            document.getElementById("wynik").innerText = wynik;
         }
 
         /*
